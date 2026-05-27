@@ -1,863 +1,789 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lohitha | Web Developer Portfolio</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Symphony - Modern Music Dashboard</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        accent: {
-                            light: '#4f46e5',
-                            dark: '#818cf8',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Google Fonts: Inter and Playwrite MX Guides -->
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playwrite+MX+Guides&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome for beautiful icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* Custom Font Application */
-        .playwrite-mx-guides-regular {
-            font-family: "Playwrite MX Guides", cursive;
-            font-weight: 400;
-            font-style: normal;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-
-        /* Subtle layout grid lines matching the handwriting guide aesthetics */
-        .bg-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-        }
-        .dark .bg-grid {
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-        }
-
-        /* Custom scrollbar matching minimalist design */
+        /* Custom scrollbar for a clean UI */
         ::-webkit-scrollbar {
             width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: transparent;
+            background: #0a0a0a;
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: #262626;
             border-radius: 3px;
         }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #404040;
         }
-
-        /* Smooth transitions for theme switching */
-        * {
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+        /* Active lyric glow effect */
+        .lyric-line {
+            transition: all 0.3s ease;
+        }
+        .lyric-active {
+            color: #c084fc; /* purple-400 */
+            text-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
+            transform: scale(1.03);
+            font-weight: 600;
         }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans min-h-screen relative selection:bg-indigo-500/20 selection:text-indigo-500">
+<body class="bg-neutral-950 text-neutral-100 h-full flex flex-col overflow-hidden select-none">
 
-    <!-- Background Blueprint Guides -->
-    <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
-    <div class="fixed inset-0 bg-gradient-to-tr from-indigo-500/5 via-transparent to-emerald-500/5 pointer-events-none z-0"></div>
+    <!-- Audio Element -->
+    <audio id="audio-player" preload="auto"></audio>
 
-    <!-- Navigation Bar -->
-    <header class="sticky top-0 z-40 bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="#hero" class="text-xl playwrite-mx-guides-regular tracking-wider hover:opacity-85">
-                lohitha
-            </a>
-            
-            <!-- Desktop Navigation -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
-                <a href="#projects" class="hover:text-indigo-600 dark:hover:text-indigo-400">Projects</a>
-                <a href="#skills" class="hover:text-indigo-600 dark:hover:text-indigo-400">Skills</a>
-                <a href="#about" class="hover:text-indigo-600 dark:hover:text-indigo-400">About</a>
-                <a href="#contact" class="hover:text-indigo-600 dark:hover:text-indigo-400">Contact</a>
+    <!-- Main Container -->
+    <div class="flex flex-1 overflow-hidden h-full">
+
+        <!-- SIDEBAR (Left Panel - Hidden on small mobile, responsive layout) -->
+        <aside class="hidden lg:flex flex-col w-64 bg-neutral-950 border-r border-neutral-900 p-6 flex-shrink-0">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+                    <i data-lucide="music" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-none tracking-tight">Symphony</h1>
+                    <span class="text-xs text-neutral-500">Music Engine</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="space-y-1 flex-1">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 bg-neutral-900 text-purple-400 rounded-xl font-medium transition-all">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-xl font-medium transition-all">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span>Favorites</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-xl font-medium transition-all">
+                    <i data-lucide="radio" class="w-5 h-5"></i>
+                    <span>Live Radio</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-xl font-medium transition-all">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span>Settings</span>
+                </a>
             </nav>
 
-            <!-- Utility Buttons -->
-            <div class="flex items-center space-x-4">
-                <!-- Theme Toggle Button -->
-                <button id="themeToggle" class="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300" aria-label="Toggle Theme">
-                    <i class="fa-solid fa-moon dark:hidden text-lg"></i>
-                    <i class="fa-solid fa-sun hidden dark:block text-lg"></i>
-                </button>
-                
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800" aria-label="Toggle Menu">
-                    <i class="fa-solid fa-bars text-lg"></i>
-                </button>
+            <!-- Storage Info / Interactive Quick card -->
+            <div class="mt-auto p-4 bg-gradient-to-b from-neutral-900 to-neutral-950 rounded-2xl border border-neutral-800">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-neutral-400 font-medium">Cloud Stream status</span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                </div>
+                <p class="text-xs text-neutral-500">All external streams active & connected.</p>
             </div>
-        </div>
+        </aside>
 
-        <!-- Mobile Navigation Menu -->
-        <div id="mobileMenu" class="hidden md:hidden border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-6 py-4 space-y-3">
-            <a href="#projects" class="block py-2 text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Projects</a>
-            <a href="#skills" class="block py-2 text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Skills</a>
-            <a href="#about" class="block py-2 text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">About</a>
-            <a href="#contact" class="block py-2 text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Contact</a>
-        </div>
-    </header>
-
-    <!-- Main Content Container -->
-    <main class="max-w-6xl mx-auto px-6 relative z-10">
-
-        <!-- Hero Section -->
-        <section id="hero" class="min-h-[85vh] flex flex-col justify-center items-start pt-12 pb-20">
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-6 animate-pulse">
-                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                <span>Open for opportunities</span>
-            </div>
+        <!-- DASHBOARD BODY (Middle & Right Panels) -->
+        <main class="flex-1 flex flex-col md:flex-row overflow-hidden bg-neutral-900/40">
             
-            <h1 class="text-4xl md:text-7xl font-light tracking-tight mb-2">
-                Hi, I'm <span class="playwrite-mx-guides-regular text-indigo-600 dark:text-indigo-400 block md:inline-block ml-0 md:ml-4">lohitha</span>
-            </h1>
+            <!-- CENTER CONTENT: Visualizer & Active Song Hero View -->
+            <section class="flex-1 flex flex-col p-6 overflow-y-auto">
+                
+                <!-- Top Bar Info (Greeting & Status) -->
+                <header class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold">Now Playing</h2>
+                        <p class="text-xs md:text-sm text-neutral-400">Welcome back! Streaming smoothly from open-source storage.</p>
+                    </div>
+                    <!-- Quick action badges -->
+                    <div class="flex gap-2">
+                        <span class="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 transition cursor-pointer text-xs rounded-full border border-neutral-700/50 flex items-center gap-1.5 text-neutral-300">
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Stream Connected
+                        </span>
+                    </div>
+                </header>
+
+                <!-- Album Art & Visualizer Container -->
+                <div class="flex-1 flex flex-col items-center justify-center min-h-[300px] py-6 relative">
+                    
+                    <!-- Background Soft Glow representing current track theme -->
+                    <div class="absolute w-72 h-72 md:w-96 md:h-96 rounded-full bg-purple-600/15 blur-[100px] pointer-events-none transition-all duration-1000" id="glow-bg"></div>
+
+                    <!-- Visualizer Canvas behind album art -->
+                    <canvas id="visualizer" class="absolute inset-0 w-full h-full opacity-60 z-0 pointer-events-none"></canvas>
+
+                    <!-- Main Cover Display with rotating outer ring -->
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="relative group">
+                            <!-- Outer glow boundary -->
+                            <div class="absolute -inset-1.5 bg-gradient-to-tr from-purple-500 to-indigo-500 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                            
+                            <!-- Rotating Vinyl/Art container -->
+                            <div class="relative w-56 h-56 md:w-64 md:h-64 rounded-full border-4 border-neutral-900 bg-neutral-950 overflow-hidden shadow-2xl transition-transform duration-500 flex items-center justify-center" id="album-ring">
+                                <img src="" alt="Album Art" id="track-cover" class="w-full h-full object-cover transition-all duration-500 pointer-events-none">
+                                <!-- Vinyl Center hole aesthetic -->
+                                <div class="absolute w-12 h-12 bg-neutral-950 rounded-full border-4 border-neutral-900 flex items-center justify-center">
+                                    <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Song Metadata -->
+                        <div class="text-center mt-6 max-w-sm">
+                            <h3 id="track-title" class="text-xl md:text-2xl font-bold truncate tracking-tight text-neutral-50 px-4">Loading Title...</h3>
+                            <p id="track-artist" class="text-sm text-purple-400 mt-1 font-medium">Loading Artist...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT PANEL: Interactive Tabs (Tracklist & Lyrics Side-by-Side/Toggleable) -->
+            <section class="w-full md:w-[400px] border-t md:border-t-0 md:border-l border-neutral-900 bg-neutral-950/80 flex flex-col overflow-hidden flex-shrink-0 h-[45%] md:h-full">
+                
+                <!-- Tab Controls -->
+                <div class="flex border-b border-neutral-900 bg-neutral-950 p-2">
+                    <button id="tab-lyrics-btn" class="flex-1 py-3 text-center text-sm font-semibold rounded-xl text-purple-400 bg-neutral-900/80 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="languages" class="w-4 h-4"></i>
+                        <span>Lyrics Panel</span>
+                    </button>
+                    <button id="tab-playlist-btn" class="flex-1 py-3 text-center text-sm font-semibold rounded-xl text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/30 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="list-music" class="w-4 h-4"></i>
+                        <span>Tracklist</span>
+                    </button>
+                </div>
+
+                <!-- TAB 1: Synced Lyrics View (Default Active) -->
+                <div id="tab-lyrics-content" class="flex-1 overflow-y-auto p-6 space-y-4 text-center md:text-left scroll-smooth relative">
+                    <div id="lyrics-container" class="space-y-6 py-24">
+                        <!-- Synced lyric lines inserted dynamically -->
+                    </div>
+                </div>
+
+                <!-- TAB 2: Full Tracklist / Interactive Queue (Hidden initially) -->
+                <div id="tab-playlist-content" class="hidden flex-1 overflow-y-auto p-6 space-y-3">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-semibold uppercase tracking-wider text-neutral-400">Queue Playlist</h4>
+                        <span class="text-xs text-neutral-500" id="playlist-count">0 Songs Available</span>
+                    </div>
+                    <div id="tracklist-container" class="space-y-2">
+                        <!-- Playable Tracks listed dynamically -->
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- GLOBAL BOTTOM CONTROL BAR (Fixed) -->
+    <footer class="bg-neutral-950 border-t border-neutral-900 p-4 md:p-6 z-20">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             
-            <h2 class="text-2xl md:text-4xl font-light text-zinc-500 dark:text-zinc-400 mb-8 max-w-3xl leading-relaxed">
-                A creative web developer crafted around pristine minimalist designs, beautiful interactions, and clean, performant codebases.
-            </h2>
-
-            <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                <a href="#projects" class="inline-flex justify-center items-center px-8 py-3.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-medium shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transform hover:-translate-y-0.5 active:translate-y-0 transition-all text-center">
-                    View My Work <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
-                </a>
-                <a href="#contact" class="inline-flex justify-center items-center px-8 py-3.5 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 font-medium transition-all text-center">
-                    Let's Chat
-                </a>
-            </div>
-
-            <div class="mt-16 flex items-center space-x-6 text-sm text-zinc-500 dark:text-zinc-400">
-                <span>Featured Skills:</span>
-                <div class="flex flex-wrap gap-2">
-                    <span class="px-2.5 py-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded text-xs">HTML/CSS</span>
-                    <span class="px-2.5 py-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded text-xs">JavaScript</span>
-                    <span class="px-2.5 py-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded text-xs">Tailwind CSS</span>
-                    <span class="px-2.5 py-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded text-xs">React</span>
+            <!-- Left Corner: Tiny Info display (Hidden on extra small screens) -->
+            <div class="hidden sm:flex items-center gap-3 w-1/4">
+                <img src="" alt="Album Art Mini" id="mini-cover" class="w-12 h-12 rounded-lg object-cover bg-neutral-800 border border-neutral-800">
+                <div class="truncate">
+                    <h5 id="mini-title" class="text-sm font-semibold text-neutral-100 truncate">Song Title</h5>
+                    <p id="mini-artist" class="text-xs text-neutral-400 truncate">Artist Name</p>
                 </div>
             </div>
-        </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="py-20 border-t border-zinc-200/50 dark:border-zinc-800/50 scroll-mt-16">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-                <div>
-                    <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-2">My Showcase</h2>
-                    <h3 class="text-3xl md:text-4xl font-light tracking-tight">Crafted Web Solutions</h3>
-                </div>
+            <!-- Center Track Controller Block -->
+            <div class="w-full md:w-2/4 flex flex-col items-center gap-2">
                 
-                <!-- Category Filters -->
-                <div id="filterContainer" class="flex flex-wrap gap-2 mt-6 md:mt-0 p-1 bg-zinc-200/40 dark:bg-zinc-900/40 border border-zinc-300/30 dark:border-zinc-800/30 rounded-xl max-w-max">
-                    <button data-filter="all" class="filter-btn active px-4 py-1.5 rounded-lg text-xs font-medium transition-all bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow">
-                        All
+                <!-- Media Control Buttons -->
+                <div class="flex items-center gap-6">
+                    <!-- Shuffle -->
+                    <button id="control-shuffle" class="text-neutral-500 hover:text-neutral-100 transition-all" title="Shuffle">
+                        <i data-lucide="shuffle" class="w-4 h-4"></i>
                     </button>
-                    <button data-filter="frontend" class="filter-btn px-4 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all">
-                        Frontend
+                    <!-- Prev -->
+                    <button id="control-prev" class="text-neutral-400 hover:text-neutral-100 transition-all transform active:scale-95" title="Previous">
+                        <i data-lucide="skip-back" class="w-5 h-5 fill-current"></i>
                     </button>
-                    <button data-filter="backend" class="filter-btn px-4 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all">
-                        Backend/API
+                    <!-- Play / Pause -->
+                    <button id="control-play" class="w-12 h-12 bg-white text-black hover:bg-purple-100 hover:scale-105 rounded-full flex items-center justify-center transition-all transform active:scale-95 shadow-lg shadow-white/10" title="Play">
+                        <i data-lucide="play" id="play-icon" class="w-5 h-5 fill-current text-neutral-950 ml-0.5"></i>
                     </button>
-                    <button data-filter="creative" class="filter-btn px-4 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all">
-                        Creative Tech
+                    <!-- Next -->
+                    <button id="control-next" class="text-neutral-400 hover:text-neutral-100 transition-all transform active:scale-95" title="Next">
+                        <i data-lucide="skip-forward" class="w-5 h-5 fill-current"></i>
+                    </button>
+                    <!-- Repeat -->
+                    <button id="control-repeat" class="text-neutral-500 hover:text-neutral-100 transition-all" title="Repeat">
+                        <i data-lucide="repeat" class="w-4 h-4"></i>
                     </button>
                 </div>
-            </div>
 
-            <!-- Projects Grid -->
-            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Dynamic insertion or HTML templating ready -->
-                
-                <!-- Project 1 -->
-                <div class="project-card group bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl dark:hover:shadow-indigo-950/20 transform hover:-translate-y-1 transition-all duration-300" data-category="frontend">
-                    <div class="p-1">
-                        <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-zinc-200/40 dark:border-zinc-800/40">
-                            <!-- Premium SVG Blueprint illustration -->
-                            <svg class="w-2/3 h-2/3 opacity-75 group-hover:scale-105 transition-all duration-500" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="10" y="10" width="180" height="100" rx="6" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4 4"/>
-                                <rect x="25" y="25" width="150" height="40" rx="4" fill="#4f46e5" fill-opacity="0.1" stroke="#4f46e5" stroke-width="1"/>
-                                <circle cx="40" cy="85" r="10" stroke="#10b981" stroke-width="1.5"/>
-                                <line x1="60" y1="80" x2="160" y2="80" stroke="#94a3b8" stroke-width="2"/>
-                                <line x1="60" y1="90" x2="130" y2="90" stroke="#94a3b8" stroke-width="1.5"/>
-                            </svg>
-                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-zinc-900/85 text-zinc-100 text-[10px] font-medium tracking-widest uppercase">AURA OS</span>
+                <!-- Custom Scrubber timeline slider -->
+                <div class="w-full flex items-center gap-3">
+                    <span id="time-current" class="text-xs text-neutral-500 font-mono w-10 text-right">0:00</span>
+                    <div class="flex-1 relative group cursor-pointer py-2" id="progress-container">
+                        <!-- Custom track timeline bar background -->
+                        <div class="h-1.5 w-full bg-neutral-800 rounded-full overflow-hidden transition-all group-hover:h-2">
+                            <!-- Interactive colored fill -->
+                            <div id="progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 w-0 transition-all"></div>
                         </div>
+                        <!-- Drag knob indicator -->
+                        <div id="progress-knob" class="absolute top-1/2 left-0 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex items-center space-x-2 text-xs text-indigo-500 mb-2 font-semibold uppercase tracking-wider">
-                            <span>Frontend</span>
-                            <span>•</span>
-                            <span>React</span>
-                        </div>
-                        <h4 class="text-xl font-light mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Aura - Minimalist Task Orchestrator</h4>
-                        <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 line-clamp-2">
-                            A highly optimized workspace hub designed for developer workflows. Strips distraction with markdown notes, clean kanbans, and pomodoro integrations.
-                        </p>
-                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
-                            <span class="text-xs text-zinc-400">View details to launch simulator</span>
-                            <button onclick="openProjectModal('aura')" class="text-xs font-semibold flex items-center group-hover:translate-x-1 transition-transform">
-                                Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="project-card group bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl dark:hover:shadow-indigo-950/20 transform hover:-translate-y-1 transition-all duration-300" data-category="backend">
-                    <div class="p-1">
-                        <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-zinc-200/40 dark:border-zinc-800/40">
-                            <!-- Premium SVG Backend illustration -->
-                            <svg class="w-2/3 h-2/3 opacity-75 group-hover:scale-105 transition-all duration-500" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="20" y="20" width="160" height="24" rx="3" stroke="#94a3b8" stroke-width="1"/>
-                                <rect x="20" y="48" width="160" height="24" rx="3" stroke="#4f46e5" stroke-width="1.5"/>
-                                <rect x="20" y="76" width="160" height="24" rx="3" stroke="#94a3b8" stroke-width="1"/>
-                                <circle cx="32" cy="32" r="3" fill="#10b981"/>
-                                <circle cx="32" cy="60" r="3" fill="#4f46e5"/>
-                                <circle cx="32" cy="88" r="3" fill="#f59e0b"/>
-                                <line x1="50" y1="60" x2="150" y2="60" stroke="#4f46e5" stroke-width="1" stroke-dasharray="2 2"/>
-                            </svg>
-                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-zinc-900/85 text-zinc-100 text-[10px] font-medium tracking-widest uppercase">LUMINA GRAPH</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center space-x-2 text-xs text-emerald-500 mb-2 font-semibold uppercase tracking-wider">
-                            <span>Backend/API</span>
-                            <span>•</span>
-                            <span>NodeJS & GraphQL</span>
-                        </div>
-                        <h4 class="text-xl font-light mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Lumina API Analytics Engine</h4>
-                        <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 line-clamp-2">
-                            Secure, real-time metrics telemetry collector. Handles throughputs of up to 10k messages per second with minimal event loop lag.
-                        </p>
-                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
-                            <span class="text-xs text-zinc-400">Database charts included</span>
-                            <button onclick="openProjectModal('lumina')" class="text-xs font-semibold flex items-center group-hover:translate-x-1 transition-transform">
-                                Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="project-card group bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl dark:hover:shadow-indigo-950/20 transform hover:-translate-y-1 transition-all duration-300" data-category="creative">
-                    <div class="p-1">
-                        <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-zinc-200/40 dark:border-zinc-800/40">
-                            <svg class="w-2/3 h-2/3 opacity-75 group-hover:scale-105 transition-all duration-500" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="100" cy="60" r="40" stroke="#4f46e5" stroke-width="1" stroke-dasharray="6 6"/>
-                                <circle cx="100" cy="60" r="25" stroke="#10b981" stroke-width="1.5"/>
-                                <path d="M60 60 L140 60 M100 20 L100 100" stroke="#94a3b8" stroke-width="0.5"/>
-                                <circle cx="100" cy="35" r="4" fill="#e11d48"/>
-                            </svg>
-                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-zinc-900/85 text-zinc-100 text-[10px] font-medium tracking-widest uppercase">CANVAS DRAFT</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center space-x-2 text-xs text-purple-500 mb-2 font-semibold uppercase tracking-wider">
-                            <span>Creative Tech</span>
-                            <span>•</span>
-                            <span>HTML5 Canvas</span>
-                        </div>
-                        <h4 class="text-xl font-light mb-2 group-hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">CanvasDraft Vector Editor</h4>
-                        <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 line-clamp-2">
-                            A browser-native canvas board supporting SVG vector creation, custom line guide paths, and seamless canvas exportation.
-                        </p>
-                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
-                            <span class="text-xs text-zinc-400">Interactive workspace tool</span>
-                            <button onclick="openProjectModal('canvasdraft')" class="text-xs font-semibold flex items-center group-hover:translate-x-1 transition-transform">
-                                Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="project-card group bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl dark:hover:shadow-indigo-950/20 transform hover:-translate-y-1 transition-all duration-300" data-category="frontend">
-                    <div class="p-1">
-                        <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-zinc-200/40 dark:border-zinc-800/40">
-                            <svg class="w-2/3 h-2/3 opacity-75 group-hover:scale-105 transition-all duration-500" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="30" y="30" width="140" height="60" rx="4" stroke="#94a3b8" stroke-width="1.5"/>
-                                <circle cx="60" cy="60" r="15" stroke="#4f46e5" stroke-width="1"/>
-                                <path d="M100 50 L140 50 M100 60 L130 60 M100 70 L120 70" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-zinc-900/85 text-zinc-100 text-[10px] font-medium tracking-widest uppercase">ECHOSYNC</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center space-x-2 text-xs text-indigo-500 mb-2 font-semibold uppercase tracking-wider">
-                            <span>Frontend</span>
-                            <span>•</span>
-                            <span>Vanilla JS</span>
-                        </div>
-                        <h4 class="text-xl font-light mb-2 group-hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">EchoSync Media Terminal</h4>
-                        <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 line-clamp-2">
-                            A browser music client with built-in canvas visualizers mapping live audio-node stream metrics dynamically.
-                        </p>
-                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
-                            <span class="text-xs text-zinc-400">Pure client-side audio API</span>
-                            <button onclick="openProjectModal('echosync')" class="text-xs font-semibold flex items-center group-hover:translate-x-1 transition-transform">
-                                Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <span id="time-duration" class="text-xs text-neutral-500 font-mono w-10">0:00</span>
                 </div>
 
             </div>
-        </section>
 
-        <!-- Skills & Abilities Section -->
-        <section id="skills" class="py-20 border-t border-zinc-200/50 dark:border-zinc-800/50 scroll-mt-16">
-            <div class="mb-12">
-                <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-2">My Toolkit</h2>
-                <h3 class="text-3xl md:text-4xl font-light tracking-tight">Core Competencies</h3>
-            </div>
-
-            <!-- Interative Skill Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <!-- Skill card 1 -->
-                <div class="skill-card group p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center hover:shadow-lg hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all cursor-pointer">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
-                        <i class="fa-brands fa-html5"></i>
-                    </div>
-                    <h4 class="font-medium text-sm mb-1">Frontend Engineering</h4>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400">HTML5, CSS3, ES6 JS</p>
-                    <div class="mt-4 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                        <div class="h-full bg-indigo-500 w-11/12"></div>
-                    </div>
-                </div>
-
-                <!-- Skill card 2 -->
-                <div class="skill-card group p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center hover:shadow-lg hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all cursor-pointer">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
-                        <i class="fa-brands fa-react"></i>
-                    </div>
-                    <h4 class="font-medium text-sm mb-1">Modern Frameworks</h4>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400">React, TailwindCSS</p>
-                    <div class="mt-4 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                        <div class="h-full bg-indigo-500 w-[85%]"></div>
-                    </div>
-                </div>
-
-                <!-- Skill card 3 -->
-                <div class="skill-card group p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center hover:shadow-lg hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all cursor-pointer">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
-                        <i class="fa-brands fa-node-js"></i>
-                    </div>
-                    <h4 class="font-medium text-sm mb-1">Backend Development</h4>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400">NodeJS, GraphQL, APIs</p>
-                    <div class="mt-4 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                        <div class="h-full bg-emerald-500 w-[75%]"></div>
-                    </div>
-                </div>
-
-                <!-- Skill card 4 -->
-                <div class="skill-card group p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center hover:shadow-lg hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all cursor-pointer">
-                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-compass-drafting"></i>
-                    </div>
-                    <h4 class="font-medium text-sm mb-1">Creative Interactions</h4>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400">HTML5 Canvas, CSS Art</p>
-                    <div class="mt-4 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                        <div class="h-full bg-amber-500 w-[80%]"></div>
+            <!-- Right Corner Control Options (Volume, etc) -->
+            <div class="hidden md:flex items-center justify-end gap-3 w-1/4">
+                <button id="control-mute" class="text-neutral-400 hover:text-neutral-100 transition-all">
+                    <i data-lucide="volume-2" id="volume-icon" class="w-4 h-4"></i>
+                </button>
+                <div class="w-24 relative group cursor-pointer py-2" id="volume-container">
+                    <div class="h-1 w-full bg-neutral-800 rounded-full overflow-hidden transition-all group-hover:h-1.5">
+                        <div id="volume-bar" class="h-full bg-purple-500 w-4/5"></div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- About Lohitha Section -->
-        <section id="about" class="py-20 border-t border-zinc-200/50 dark:border-zinc-800/50 scroll-mt-16">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-                <!-- Grid illustration matching guidelines -->
-                <div class="md:col-span-5 relative">
-                    <div class="aspect-square rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 p-4 relative overflow-hidden bg-white/50 dark:bg-zinc-900/10 backdrop-blur-sm">
-                        <!-- Intricate developer decorative badge -->
-                        <div class="w-full h-full rounded-xl bg-indigo-50/50 dark:bg-indigo-950/20 flex flex-col items-center justify-center p-6 border border-zinc-200 dark:border-zinc-800">
-                            <div class="playwrite-mx-guides-regular text-5xl md:text-6xl text-indigo-600 dark:text-indigo-400 mb-4 select-none">
-                                L
-                            </div>
-                            <span class="text-xs font-semibold tracking-widest uppercase mb-1">Lohitha Portfolio</span>
-                            <span class="text-[10px] text-zinc-400">EST. 2026</span>
-                            <div class="absolute bottom-6 left-6 right-6 flex justify-between border-t border-dashed border-zinc-200 dark:border-zinc-800 pt-4 text-[10px] text-zinc-500">
-                                <span>BUILD: FRONTEND</span>
-                                <span>TYPE: RESPONSIVE</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="md:col-span-7">
-                    <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-2">My Story</h2>
-                    <h3 class="text-3xl md:text-4xl font-light tracking-tight mb-6">Driven by beautiful minimalism</h3>
-                    <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6">
-                        I am Lohitha, a developer deeply passionate about reducing noise on the internet. I believe web interfaces should breathe, code bases should be modular and easily testable, and design systems should feel deliberate.
-                    </p>
-                    <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
-                        My primary playground includes advanced HTML layouts, dynamic reactive frameworks, custom vector interfaces, and performant backend data streams. When not designing minimalist modules, I’m reading design FAQs, exploring new CSS variables, and building sandbox utilities.
-                    </p>
-                    <div class="flex items-center space-x-4">
-                        <a href="#contact" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm transition-colors shadow-lg shadow-indigo-500/10">
-                            Hire Me
-                        </a>
-                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="px-6 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 text-sm font-medium transition-all">
-                            <i class="fa-brands fa-github mr-2"></i> GitHub Profile
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-20 border-t border-zinc-200/50 dark:border-zinc-800/50 scroll-mt-16">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <div class="lg:col-span-5">
-                    <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-2">Get in touch</h2>
-                    <h3 class="text-3xl md:text-4xl font-light tracking-tight mb-6">Let's build something beautiful.</h3>
-                    <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
-                        Have an project proposal, an exciting job opportunity, or simply want to chat about minimal styling? Leave a message directly in this terminal!
-                    </p>
-
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 rounded-lg bg-zinc-200/50 dark:bg-zinc-800/50 flex items-center justify-center text-indigo-500">
-                                <i class="fa-regular fa-envelope"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xs text-zinc-400 font-semibold uppercase">Email Directly</h4>
-                                <a href="mailto:lohitha.dev@example.com" class="text-sm hover:underline hover:text-indigo-600 dark:hover:text-indigo-400">lohitha.dev@example.com</a>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 rounded-lg bg-zinc-200/50 dark:bg-zinc-800/50 flex items-center justify-center text-indigo-500">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xs text-zinc-400 font-semibold uppercase">Location</h4>
-                                <span class="text-sm text-zinc-600 dark:text-zinc-400">Global / Remote</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interactive Form -->
-                <div class="lg:col-span-7">
-                    <form id="contactForm" class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-sm">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block text-xs font-semibold text-zinc-400 uppercase mb-2">Your Name</label>
-                                <input type="text" id="name" required class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 text-sm transition-all" placeholder="Ada Lovelace">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-xs font-semibold text-zinc-400 uppercase mb-2">Email Address</label>
-                                <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 text-sm transition-all" placeholder="ada@example.com">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="message" class="block text-xs font-semibold text-zinc-400 uppercase mb-2">Message</label>
-                            <textarea id="message" rows="4" required class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 text-sm transition-all resize-none" placeholder="Let's build a minimalist page..."></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full py-4 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold hover:shadow-lg hover:shadow-indigo-500/5 active:scale-[0.99] transition-all flex items-center justify-center space-x-2">
-                            <span>Dispatch Message</span>
-                            <i class="fa-regular fa-paper-plane text-xs"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Simple Footer -->
-    <footer class="border-t border-zinc-200/50 dark:border-zinc-800/50 bg-zinc-100/50 dark:bg-zinc-950/50 py-12 relative z-10">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <span class="playwrite-mx-guides-regular text-lg text-zinc-400 dark:text-zinc-600">lohitha</span>
-            <span class="text-xs text-zinc-400 dark:text-zinc-500">© 2026 Lohitha. Built with pure minimalist principles. All rights reserved.</span>
-            <div class="flex items-center space-x-6">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 text-lg transition-colors" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 text-lg transition-colors" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 text-lg transition-colors" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-            </div>
         </div>
     </footer>
 
-    <!-- Project Showcase Details Modal -->
-    <div id="projectModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Modal Backdrop -->
-            <div id="modalBackdrop" class="fixed inset-0 bg-zinc-950/60 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
-
-            <!-- Modal Align Helper -->
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-            <!-- Modal Content Frame -->
-            <div class="inline-block align-bottom bg-white dark:bg-zinc-900 rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full border border-zinc-200 dark:border-zinc-800">
-                <div class="p-6 md:p-8">
-                    <!-- Close button -->
-                    <div class="flex justify-between items-center mb-6">
-                        <span id="modalCategory" class="px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider">Category</span>
-                        <button id="closeModalBtn" class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
-                            <i class="fa-solid fa-xmark text-lg"></i>
-                        </button>
-                    </div>
-
-                    <h3 id="modalTitle" class="text-2xl font-light tracking-tight mb-4">Project Title</h3>
-                    
-                    <!-- Dynamic Demo Frame Simulator -->
-                    <div class="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 mb-6">
-                        <div class="flex items-center space-x-1.5 mb-3 border-b border-zinc-200 dark:border-zinc-800 pb-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-red-400 inline-block"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-green-400 inline-block"></span>
-                            <span class="text-[10px] text-zinc-400 ml-2 font-mono">browser-demo-live-instance</span>
-                        </div>
-                        <div id="modalSimulatorContent" class="min-h-[140px] flex items-center justify-center">
-                            <!-- Injected by script -->
-                        </div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-semibold text-zinc-400 uppercase">Architecture & Concept</h4>
-                        <p id="modalDescription" class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
-                            Detailed project specification.
-                        </p>
-
-                        <h4 class="text-xs font-semibold text-zinc-400 uppercase pt-2">Stack Applied</h4>
-                        <div id="modalStack" class="flex flex-wrap gap-2">
-                            <!-- Injected tags -->
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-end space-x-3 mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-800">
-                        <a id="modalLiveLink" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-sm font-semibold hover:opacity-90">
-                            Launch Live <i class="fa-solid fa-up-right-from-square ml-1.5 text-xs"></i>
-                        </a>
-                        <a id="modalCodeLink" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-sm font-semibold">
-                            Source Repository <i class="fa-brands fa-github ml-1.5"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Live Toast Message Success -->
-    <div id="toastSuccess" class="fixed bottom-6 right-6 z-50 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300">
-        <div class="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-6 py-4 rounded-2xl shadow-xl border border-zinc-800 dark:border-zinc-200 flex items-center space-x-3">
-            <div class="w-8 h-8 rounded-full bg-green-500/20 text-green-500 dark:text-green-600 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <div>
-                <h5 class="text-xs font-bold uppercase tracking-wider">Message Dispatched!</h5>
-                <p class="text-[10px] opacity-75">Thank you, Lohitha will reach out soon.</p>
-            </div>
-        </div>
-    </div>
-
+    <!-- Vanilla Javascript Logic Core -->
     <script>
-        // Theme Manager
-        const themeToggle = document.getElementById('themeToggle');
+        // Track list loaded directly with valid Open-Source streaming assets & timed interactive lyrics.
+        const playlist = [
+            {
+                title: "Lost in the City Lights",
+                artist: "Cosmo Sheldrake",
+                cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=60",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                lyrics: [
+                    { time: 0, text: "🎵 Welcome to Symphony 🎵" },
+                    { time: 5, text: "Let the synthetic rhythms begin" },
+                    { time: 15, text: "Fading neon lights guide our way..." },
+                    { time: 25, text: "Hear the ambient currents carry the night" },
+                    { time: 38, text: "Walking past silent windows of the city" },
+                    { time: 48, text: "Each step tells an echoes of bygone times" },
+                    { time: 58, text: "We seek a melody to live forever." },
+                    { time: 70, text: "Instruments blending, taking us higher." },
+                    { time: 85, text: "🎹 Smooth piano bridge transition 🎹" },
+                    { time: 105, text: "Do you hear the dynamic baseline drop?" },
+                    { time: 120, text: "Walking forward, chasing the Horizon." },
+                    { time: 145, text: "Lost in the endless city lights..." },
+                    { time: 170, text: "The night slowly starts to wind down." },
+                    { time: 195, text: "Thank you for listening to Symphony!" }
+                ]
+            },
+            {
+                title: "Forest Lullaby",
+                artist: "Lesfm",
+                cover: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500&auto=format&fit=crop&q=60",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                lyrics: [
+                    { time: 0, text: "🌿 Quiet your mind, welcome the forest 🌿" },
+                    { time: 8, text: "Rustling leaves whispering ancient secrets" },
+                    { time: 20, text: "Golden sunshine breaking through branches" },
+                    { time: 35, text: "A peaceful sanctuary away from the noise" },
+                    { time: 48, text: "Let the soft ambient harp carry your thoughts" },
+                    { time: 65, text: "Deep breath in, feel the cool woodland breeze" },
+                    { time: 80, text: "No worries, only tranquil shadows playing" },
+                    { time: 100, text: "Close your eyes and drift through the trees..." },
+                    { time: 125, text: "Nature's beautiful acoustic tapestry is alive" },
+                    { time: 150, text: "Finding comfort in the gentle silence" }
+                ]
+            },
+            {
+                title: "Midnight Groove",
+                artist: "Synthwave Echo",
+                cover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                lyrics: [
+                    { time: 0, text: "⚡ High Octane Cyber Vibes ⚡" },
+                    { time: 6, text: "Powering up the grid systems" },
+                    { time: 15, text: "Revving up onto the futuristic highway" },
+                    { time: 28, text: "Synthesizers pulsing straight to your veins" },
+                    { time: 42, text: "Electric winds blowing through retro streets" },
+                    { time: 55, text: "No speed limits, just dynamic beats" },
+                    { time: 70, text: "Can you feel the overdrive surging?" },
+                    { time: 88, text: "Unleashing the digital sequence matrix" },
+                    { time: 110, text: "Driving wild past the virtual sunburst" },
+                    { time: 135, text: "Grooving at the speed of electronic lights!" }
+                ]
+            }
+        ];
+
+        // State variables
+        let currentTrackIdx = 0;
+        let isPlaying = false;
+        let isMuted = false;
+        let isShuffle = false;
+        let isRepeat = false; // false = sequence, true = repeat current track
+        let lastVolume = 0.8;
+
+        // Elements
+        const audio = document.getElementById('audio-player');
+        const playBtn = document.getElementById('control-play');
+        const playIcon = document.getElementById('play-icon');
+        const prevBtn = document.getElementById('control-prev');
+        const nextBtn = document.getElementById('control-next');
+        const shuffleBtn = document.getElementById('control-shuffle');
+        const repeatBtn = document.getElementById('control-repeat');
         
-        // Check for saved preferences
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+        const trackTitle = document.getElementById('track-title');
+        const trackArtist = document.getElementById('track-artist');
+        const trackCover = document.getElementById('track-cover');
+        const miniCover = document.getElementById('mini-cover');
+        const miniTitle = document.getElementById('mini-title');
+        const miniArtist = document.getElementById('mini-artist');
+        const glowBg = document.getElementById('glow-bg');
+
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressKnob = document.getElementById('progress-knob');
+        const timeCurrent = document.getElementById('time-current');
+        const timeDuration = document.getElementById('time-duration');
+
+        const volumeContainer = document.getElementById('volume-container');
+        const volumeBar = document.getElementById('volume-bar');
+        const muteBtn = document.getElementById('control-mute');
+        const volumeIcon = document.getElementById('volume-icon');
+
+        const lyricsContainer = document.getElementById('lyrics-container');
+        const tracklistContainer = document.getElementById('tracklist-container');
+        const playlistCount = document.getElementById('playlist-count');
+
+        // Tabs
+        const tabLyricsBtn = document.getElementById('tab-lyrics-btn');
+        const tabPlaylistBtn = document.getElementById('tab-playlist-btn');
+        const tabLyricsContent = document.getElementById('tab-lyrics-content');
+        const tabPlaylistContent = document.getElementById('tab-playlist-content');
+
+        // Visualizer Setup
+        const canvas = document.getElementById('visualizer');
+        const ctx = canvas.getContext('2d');
+        let visualizerAnimationId;
+
+        // Initialize App
+        function init() {
+            lucide.createIcons();
+            loadTrack(currentTrackIdx);
+            buildTracklist();
+            setupVolume(0.8);
+            resizeCanvas();
+
+            // Event Listeners for Player
+            playBtn.addEventListener('click', togglePlay);
+            prevBtn.addEventListener('click', playPrev);
+            nextBtn.addEventListener('click', playNext);
+            shuffleBtn.addEventListener('click', toggleShuffle);
+            repeatBtn.addEventListener('click', toggleRepeat);
+
+            audio.addEventListener('timeupdate', updateProgress);
+            audio.addEventListener('loadedmetadata', setDuration);
+            audio.addEventListener('ended', handleTrackEnded);
+
+            // Scrubber
+            progressContainer.addEventListener('click', seekTrack);
+            volumeContainer.addEventListener('click', adjustVolume);
+            muteBtn.addEventListener('click', toggleMute);
+
+            // Tab toggles
+            tabLyricsBtn.addEventListener('click', () => switchTab('lyrics'));
+            tabPlaylistBtn.addEventListener('click', () => switchTab('playlist'));
+
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Start Visualizer Loop
+            startVisualizer();
         }
 
-        themeToggle.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
+        // Switch active tab view (Lyrics vs Queue)
+        function switchTab(tab) {
+            if (tab === 'lyrics') {
+                tabLyricsContent.classList.remove('hidden');
+                tabPlaylistContent.classList.add('hidden');
+                
+                tabLyricsBtn.classList.add('bg-neutral-900/80', 'text-purple-400');
+                tabLyricsBtn.classList.remove('text-neutral-400');
+
+                tabPlaylistBtn.classList.remove('bg-neutral-900/80', 'text-purple-400');
+                tabPlaylistBtn.classList.add('text-neutral-400');
             } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
+                tabPlaylistContent.classList.remove('hidden');
+                tabLyricsContent.classList.add('hidden');
+
+                tabPlaylistBtn.classList.add('bg-neutral-900/80', 'text-purple-400');
+                tabPlaylistBtn.classList.remove('text-neutral-400');
+
+                tabLyricsBtn.classList.remove('bg-neutral-900/80', 'text-purple-400');
+                tabLyricsBtn.classList.add('text-neutral-400');
             }
-        });
+        }
 
-        // Mobile Menu Toggler
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        // Populate track queue sidebar
+        function buildTracklist() {
+            tracklistContainer.innerHTML = '';
+            playlistCount.textContent = `${playlist.length} Songs Available`;
 
-        // Close mobile navigation on menu link clicks
-        const navLinks = mobileMenu.querySelectorAll('a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
+            playlist.forEach((track, index) => {
+                const trackEl = document.createElement('div');
+                trackEl.className = `flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all ${
+                    index === currentTrackIdx 
+                    ? 'bg-purple-900/20 border border-purple-500/30' 
+                    : 'bg-neutral-900/40 hover:bg-neutral-900 border border-transparent'
+                }`;
+                trackEl.onclick = () => {
+                    currentTrackIdx = index;
+                    loadTrack(currentTrackIdx);
+                    if (isPlaying) playTrack();
+                };
+
+                trackEl.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <img src="${track.cover}" alt="" class="w-10 h-10 rounded-lg object-cover">
+                        <div>
+                            <p class="text-sm font-semibold truncate max-w-[180px] ${index === currentTrackIdx ? 'text-purple-400' : 'text-neutral-100'}">${track.title}</p>
+                            <p class="text-xs text-neutral-400 truncate max-w-[180px]">${track.artist}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        ${index === currentTrackIdx ? '<span class="text-xs text-purple-400 animate-pulse">Playing</span>' : ''}
+                        <i data-lucide="${index === currentTrackIdx ? 'volume-2' : 'play'}" class="w-4 h-4 text-neutral-400"></i>
+                    </div>
+                `;
+                tracklistContainer.appendChild(trackEl);
             });
-        });
+            lucide.createIcons();
+        }
 
-        // Project Directory Database
-        const projectData = {
-            aura: {
-                title: 'Aura - Minimalist Task Orchestrator',
-                category: 'Frontend',
-                description: 'Aura OS represents a minimal canvas designed around productivity and code sprints. It combines clean minimalist task boards with localized storage options, custom markdown notes, and focused Pomodoro clock intervals.',
-                stack: ['React', 'Tailwind CSS', 'LocalStorage', 'Framer Motion'],
-                liveLink: 'https://github.com',
-                codeLink: 'https://github.com',
-                simulatorHTML: `
-                    <div class="w-full max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl flex flex-col justify-between">
-                        <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2 mb-3">
-                            <span class="text-xs font-semibold tracking-wider text-indigo-500">Aura Board</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500">Active Sprint</span>
-                        </div>
-                        <div class="space-y-2 mb-4">
-                            <div class="flex items-center justify-between p-2 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800">
-                                <div class="flex items-center space-x-2">
-                                    <input type="checkbox" checked disabled class="accent-indigo-500">
-                                    <span class="text-xs line-through text-zinc-400">Restyle Header Elements</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between p-2 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800">
-                                <div class="flex items-center space-x-2">
-                                    <input type="checkbox" disabled class="accent-indigo-500">
-                                    <span class="text-xs text-zinc-600 dark:text-zinc-300">Set repository secrets</span>
-                                </div>
-                                <span class="text-[9px] bg-red-500/10 text-red-500 px-1.5 py-0.2 rounded font-semibold uppercase">High</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800">
-                            <span class="text-[10px] text-zinc-400">Total Items: 2</span>
-                            <span class="text-[10px] text-zinc-400">Pomodoro: 25:00</span>
-                        </div>
-                    </div>
-                `
-            },
-            lumina: {
-                title: 'Lumina API Analytics Engine',
-                category: 'Backend / API',
-                description: 'A beautiful administrative pipeline designed to harvest microservice telemetry instantly. Deploys optimized GraphQL queries to compile traffic load, memory, and disk health metrics within minimal footprints.',
-                stack: ['NodeJS', 'Express', 'GraphQL', 'Chart.js'],
-                liveLink: 'https://github.com',
-                codeLink: 'https://github.com',
-                simulatorHTML: `
-                    <div class="w-full max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-bold text-emerald-500 tracking-wider">LUMINA SERVER METRICS</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-500 animate-pulse">Online</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3 mb-2">
-                            <div class="p-2.5 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800">
-                                <span class="block text-[9px] text-zinc-400 uppercase">Response Code</span>
-                                <span class="text-base font-semibold text-emerald-500">200 OK</span>
-                            </div>
-                            <div class="p-2.5 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800">
-                                <span class="block text-[9px] text-zinc-400 uppercase">Latency (p99)</span>
-                                <span class="text-base font-semibold text-zinc-600 dark:text-zinc-300">4.2ms</span>
-                            </div>
-                        </div>
-                        <div class="h-6 w-full flex items-end gap-[3px] mt-4">
-                            <div class="h-[20%] w-full bg-emerald-400 rounded-sm"></div>
-                            <div class="h-[40%] w-full bg-emerald-400 rounded-sm"></div>
-                            <div class="h-[30%] w-full bg-emerald-400 rounded-sm"></div>
-                            <div class="h-[60%] w-full bg-emerald-400 rounded-sm"></div>
-                            <div class="h-[80%] w-full bg-emerald-400 rounded-sm"></div>
-                            <div class="h-[95%] w-full bg-emerald-500 rounded-sm"></div>
-                        </div>
-                    </div>
-                `
-            },
-            canvasdraft: {
-                title: 'CanvasDraft Vector Editor',
-                category: 'Creative Tech',
-                description: 'Browser native interactive sketch board built on top of high-performance HTML5 Canvas APIs. Designed to sketch out minimalist UI drafts and quickly export SVG vector tags.',
-                stack: ['HTML5 Canvas', 'Vanilla CSS', 'ES6 JavaScript'],
-                liveLink: 'https://github.com',
-                codeLink: 'https://github.com',
-                simulatorHTML: `
-                    <div class="w-full max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl text-center">
-                        <div class="mb-3 flex justify-between">
-                            <span class="text-[10px] font-bold text-zinc-400">DRAFTING CANVAS</span>
-                            <div class="flex space-x-1">
-                                <span class="w-3 h-3 bg-red-500 rounded-full inline-block cursor-pointer"></span>
-                                <span class="w-3 h-3 bg-indigo-500 rounded-full inline-block cursor-pointer"></span>
-                                <span class="w-3 h-3 bg-emerald-500 rounded-full inline-block cursor-pointer"></span>
-                            </div>
-                        </div>
-                        <div class="h-28 border border-dashed border-zinc-300 dark:border-zinc-800 rounded-lg flex items-center justify-center relative bg-zinc-50 dark:bg-zinc-950">
-                            <!-- Vector draft placeholder simulator -->
-                            <svg class="w-16 h-16 animate-spin duration-1000" viewBox="0 0 100 100" fill="none">
-                                <circle cx="50" cy="50" r="40" stroke="#4f46e5" stroke-width="2" stroke-dasharray="10 10"/>
-                            </svg>
-                            <span class="absolute bottom-1 right-2 text-[9px] text-zinc-400">Scale: 100%</span>
-                        </div>
-                    </div>
-                `
-            },
-            echosync: {
-                title: 'EchoSync Media Terminal',
-                category: 'Frontend',
-                description: 'A client-side media simulation showcasing the power of customized canvas overlays mapped to HTMLAudioNodes. Real-time pitch, frequency, and spectrum visualizations generated completely locally without slow server setups.',
-                stack: ['Web Audio API', 'Canvas API', 'Tailwind CSS'],
-                liveLink: 'https://github.com',
-                codeLink: 'https://github.com',
-                simulatorHTML: `
-                    <div class="w-full max-w-sm bg-zinc-950 border border-zinc-800 p-4 rounded-xl text-zinc-100">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-[9px] text-zinc-500 font-mono">01:45 / 03:20</span>
-                            <span class="text-[9px] text-zinc-500 font-mono uppercase">Streaming</span>
-                        </div>
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-lg shadow-lg">
-                                <i class="fa-solid fa-music"></i>
-                            </div>
-                            <div>
-                                <h5 class="text-xs font-semibold">Minimalist Resonance</h5>
-                                <p class="text-[10px] text-zinc-500">Lohitha & Synth Labs</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-center space-x-4">
-                            <button class="text-zinc-500 hover:text-white transition-colors text-xs"><i class="fa-solid fa-backward-step"></i></button>
-                            <button class="w-8 h-8 rounded-full bg-white text-zinc-950 flex items-center justify-center hover:scale-105 transition-transform"><i class="fa-solid fa-pause"></i></button>
-                            <button class="text-zinc-500 hover:text-white transition-colors text-xs"><i class="fa-solid fa-forward-step"></i></button>
-                        </div>
-                    </div>
-                `
+        // Load Track Assets
+        function loadTrack(index) {
+            const track = playlist[index];
+            audio.src = track.src;
+            
+            trackTitle.textContent = track.title;
+            trackArtist.textContent = track.artist;
+            trackCover.src = track.cover;
+            
+            // Bottom Mini displays
+            miniTitle.textContent = track.title;
+            miniArtist.textContent = track.artist;
+            miniCover.src = track.cover;
+
+            // Soft glow color shifting depending on art index
+            const glowColors = [
+                'rgba(147, 51, 234, 0.15)', // Purple
+                'rgba(16, 185, 129, 0.12)', // Emerald
+                'rgba(59, 130, 246, 0.15)'  // Blue
+            ];
+            glowBg.style.backgroundColor = glowColors[index % glowColors.length];
+
+            // Build dynamic synced lyrics
+            buildLyrics(track.lyrics);
+            
+            // Re-render tracklist to update active styling indicator
+            buildTracklist();
+
+            // Set up vinyl ring initial rotation state
+            document.getElementById('album-ring').style.transform = "rotate(0deg)";
+        }
+
+        // Play/Pause Action
+        function togglePlay() {
+            if (isPlaying) {
+                pauseTrack();
+            } else {
+                playTrack();
             }
-        };
+        }
 
-        // Project Filter Mechanics
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const projectCards = document.querySelectorAll('.project-card');
+        function playTrack() {
+            isPlaying = true;
+            audio.play().catch(err => {
+                console.log("Audio playback failed because of browser autoplay policy. Waiting for touch interaction.");
+            });
+            playIcon.setAttribute('data-lucide', 'pause');
+            lucide.createIcons();
+            // Start spinning vinyl animation
+            document.getElementById('album-ring').classList.add('animate-[spin_20s_linear_infinite]');
+        }
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Clear active states
-                filterBtns.forEach(b => {
-                    b.classList.remove('active', 'bg-zinc-900', 'text-white', 'dark:bg-zinc-100', 'dark:text-zinc-900', 'shadow');
-                    b.classList.add('text-zinc-600', 'dark:text-zinc-400');
+        function pauseTrack() {
+            isPlaying = false;
+            audio.pause();
+            playIcon.setAttribute('data-lucide', 'play');
+            lucide.createIcons();
+            // Stop spinning vinyl animation
+            document.getElementById('album-ring').classList.remove('animate-[spin_20s_linear_infinite]');
+        }
+
+        function playPrev() {
+            currentTrackIdx--;
+            if (currentTrackIdx < 0) {
+                currentTrackIdx = playlist.length - 1;
+            }
+            loadTrack(currentTrackIdx);
+            if (isPlaying) playTrack();
+        }
+
+        function playNext() {
+            if (isShuffle) {
+                currentTrackIdx = Math.floor(Math.random() * playlist.length);
+            } else {
+                currentTrackIdx++;
+                if (currentTrackIdx >= playlist.length) {
+                    currentTrackIdx = 0;
+                }
+            }
+            loadTrack(currentTrackIdx);
+            if (isPlaying) playTrack();
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            shuffleBtn.classList.toggle('text-purple-400', isShuffle);
+            shuffleBtn.classList.toggle('text-neutral-500', !isShuffle);
+        }
+
+        function toggleRepeat() {
+            isRepeat = !isRepeat;
+            repeatBtn.classList.toggle('text-purple-400', isRepeat);
+            repeatBtn.classList.toggle('text-neutral-500', !isRepeat);
+        }
+
+        function handleTrackEnded() {
+            if (isRepeat) {
+                audio.currentTime = 0;
+                playTrack();
+            } else {
+                playNext();
+            }
+        }
+
+        // Timeline Progress updates
+        function updateProgress(e) {
+            const { duration, currentTime } = e.srcElement;
+            if (!duration) return;
+            
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            progressKnob.style.left = `${progressPercent}%`;
+            timeCurrent.textContent = formatTime(currentTime);
+
+            // Highlighting Synced Lyric Line
+            syncLyrics(currentTime);
+        }
+
+        function setDuration() {
+            timeDuration.textContent = formatTime(audio.duration || 0);
+        }
+
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        // Interactive seek timeline
+        function seekTrack(e) {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            if (!duration) return;
+
+            const newTime = (clickX / width) * duration;
+            audio.currentTime = newTime;
+        }
+
+        // Syncing and scrolling Lyrics matching playhead
+        let lyricLineEls = [];
+        let activeLyricIdx = -1;
+
+        function buildLyrics(lyricsArray) {
+            lyricsContainer.innerHTML = '';
+            lyricLineEls = [];
+            activeLyricIdx = -1;
+
+            if (!lyricsArray || lyricsArray.length === 0) {
+                lyricsContainer.innerHTML = `<p class="text-neutral-500 italic">No lyrics available for this song.</p>`;
+                return;
+            }
+
+            lyricsArray.forEach((lyric, idx) => {
+                const p = document.createElement('p');
+                p.className = 'lyric-line text-lg text-neutral-500 py-1 font-medium transition-all duration-300';
+                p.textContent = lyric.text;
+                p.setAttribute('data-time', lyric.time);
+                lyricsContainer.appendChild(p);
+                lyricLineEls.push({ element: p, time: lyric.time });
+            });
+        }
+
+        function syncLyrics(currentTime) {
+            let matchedIdx = -1;
+
+            for (let i = 0; i < lyricLineEls.length; i++) {
+                if (currentTime >= lyricLineEls[i].time) {
+                    matchedIdx = i;
+                } else {
+                    break;
+                }
+            }
+
+            if (matchedIdx !== -1 && matchedIdx !== activeLyricIdx) {
+                // Clear old active line styling
+                if (activeLyricIdx !== -1 && lyricLineEls[activeLyricIdx]) {
+                    lyricLineEls[activeLyricIdx].element.classList.remove('lyric-active');
+                    lyricLineEls[activeLyricIdx].element.classList.add('text-neutral-500');
+                }
+
+                // Apply new active line styling
+                activeLyricIdx = matchedIdx;
+                const activeEl = lyricLineEls[activeLyricIdx].element;
+                activeEl.classList.add('lyric-active');
+                activeEl.classList.remove('text-neutral-500');
+
+                // Auto Scroll matching lyrics panel nicely centered
+                const containerHeight = tabLyricsContent.clientHeight;
+                const elementTop = activeEl.offsetTop;
+                const elementHeight = activeEl.clientHeight;
+                
+                tabLyricsContent.scrollTo({
+                    top: elementTop - (containerHeight / 2) + (elementHeight / 2),
+                    behavior: 'smooth'
                 });
+            }
+        }
 
-                // Apply active to selected
-                btn.classList.add('active', 'bg-zinc-900', 'text-white', 'dark:bg-zinc-100', 'dark:text-zinc-900', 'shadow');
-                btn.classList.remove('text-zinc-600', 'dark:text-zinc-400');
+        // Audio Volume mechanics
+        function adjustVolume(e) {
+            const width = volumeContainer.clientWidth;
+            const clickX = e.offsetX;
+            let percent = clickX / width;
+            if (percent < 0) percent = 0;
+            if (percent > 1) percent = 1;
 
-                const filterValue = btn.getAttribute('data-filter');
+            setupVolume(percent);
+            isMuted = false;
+        }
 
-                projectCards.forEach(card => {
-                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                        card.style.display = 'block';
-                        setTimeout(() => card.style.opacity = '1', 50);
+        function setupVolume(val) {
+            audio.volume = val;
+            volumeBar.style.width = `${val * 100}%`;
+            lastVolume = val;
+            updateVolumeIcon(val);
+        }
+
+        function toggleMute() {
+            if (isMuted) {
+                setupVolume(lastVolume);
+                isMuted = false;
+            } else {
+                lastVolume = audio.volume;
+                setupVolume(0);
+                isMuted = true;
+            }
+        }
+
+        function updateVolumeIcon(val) {
+            let iconName = 'volume-2';
+            if (val === 0) {
+                iconName = 'volume-x';
+            } else if (val < 0.4) {
+                iconName = 'volume-1';
+            }
+            volumeIcon.setAttribute('data-lucide', iconName);
+            lucide.createIcons();
+        }
+
+        // Canvas Audio Visualizer Rendering (Interactive Responsive Waves)
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        let angles = Array.from({length: 64}, (_, i) => i * (Math.PI / 32));
+        let waveOffsets = Array(64).fill(0);
+
+        function startVisualizer() {
+            function draw() {
+                requestAnimationFrame(draw);
+                if (!ctx) return;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Set styling context variables
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const minDim = Math.min(canvas.width, canvas.height);
+                const baseRadius = minDim * 0.28; // Outer halo bound around vinyl ring
+                
+                // Wave dynamics
+                let waveIntensity = isPlaying ? 35 : 5; // Height/vibe modulated by play/pause state
+                
+                ctx.lineWidth = 2.5;
+                
+                // Draw 2 glowing ring visualizers
+                for (let pass = 0; pass < 2; pass++) {
+                    ctx.beginPath();
+                    const currentRadius = baseRadius + (pass * 20);
+                    
+                    // Style ring glow paths
+                    const gradient = ctx.createRadialGradient(centerX, centerY, currentRadius - 10, centerX, centerY, currentRadius + 30);
+                    if (pass === 0) {
+                        gradient.addColorStop(0, 'rgba(147, 51, 234, 0.4)'); // purple-500
+                        gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');  // indigo-500
                     } else {
-                        card.style.opacity = '0';
-                        setTimeout(() => card.style.display = 'none', 200);
+                        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');  // indigo-500
+                        gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');  // purple-600
                     }
-                });
-            });
-        });
+                    ctx.strokeStyle = gradient;
 
-        // Modal Elements
-        const projectModal = document.getElementById('projectModal');
-        const modalBackdrop = document.getElementById('modalBackdrop');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const modalCategory = document.getElementById('modalCategory');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDescription = document.getElementById('modalDescription');
-        const modalStack = document.getElementById('modalStack');
-        const modalLiveLink = document.getElementById('modalLiveLink');
-        const modalCodeLink = document.getElementById('modalCodeLink');
-        const modalSimulatorContent = document.getElementById('modalSimulatorContent');
+                    for (let i = 0; i <= angles.length; i++) {
+                        const idx = i % angles.length;
+                        const angle = angles[idx];
+                        
+                        // Introduce fluid wavy oscillation patterns
+                        if (isPlaying) {
+                            waveOffsets[idx] += (Math.random() - 0.5) * 4;
+                            // Dampen excessive offsets
+                            waveOffsets[idx] = Math.max(-waveIntensity, Math.min(waveIntensity, waveOffsets[idx]));
+                        } else {
+                            // Settle back slowly when paused
+                            waveOffsets[idx] *= 0.95;
+                        }
 
-        function openProjectModal(projectId) {
-            const data = projectData[projectId];
-            if (!data) return;
+                        const offsetRadius = currentRadius + waveOffsets[idx] + Math.sin(angle * 6 + Date.now() * 0.003) * (waveIntensity * 0.4);
+                        const x = centerX + Math.cos(angle) * offsetRadius;
+                        const y = centerY + Math.sin(angle) * offsetRadius;
 
-            // Populate details
-            modalCategory.innerText = data.category;
-            modalTitle.innerText = data.title;
-            modalDescription.innerText = data.description;
-            modalSimulatorContent.innerHTML = data.simulatorHTML;
-            
-            // Build stack tag lists
-            modalStack.innerHTML = '';
-            data.stack.forEach(tech => {
-                const span = document.createElement('span');
-                span.className = 'px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700/50';
-                span.innerText = tech;
-                modalStack.appendChild(span);
-            });
-
-            modalLiveLink.href = data.liveLink;
-            modalCodeLink.href = data.codeLink;
-
-            // Show modal
-            projectModal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-        }
-
-        function closeModal() {
-            projectModal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-        }
-
-        closeModalBtn.addEventListener('click', closeModal);
-        modalBackdrop.addEventListener('click', closeModal);
-
-        // Escape Key Modal Exit
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
+                        if (i === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
             }
-        });
+            draw();
+        }
 
-        // Contact Submission Mechanics
-        const contactForm = document.getElementById('contactForm');
-        const toastSuccess = document.getElementById('toastSuccess');
-
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const clientName = document.getElementById('name').value;
-            const clientEmail = document.getElementById('email').value;
-            const clientMessage = document.getElementById('message').value;
-
-            // Package message
-            const payload = {
-                name: clientName,
-                email: clientEmail,
-                message: clientMessage,
-                timestamp: new Date().toISOString()
-            };
-
-            // Save locally to simulate delivery on static hosts (such as GitHub Pages)
-            const savedMessages = JSON.parse(localStorage.getItem('messages') || '[]');
-            savedMessages.push(payload);
-            localStorage.setItem('messages', JSON.stringify(savedMessages));
-
-            // Feedback Toast Animation
-            toastSuccess.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
-            toastSuccess.classList.add('translate-y-0', 'opacity-100');
-
-            // Reset UI Form
-            contactForm.reset();
-
-            // Automate Toast Expiration
-            setTimeout(() => {
-                toastSuccess.classList.remove('translate-y-0', 'opacity-100');
-                toastSuccess.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
-            }, 4000);
-        });
+        // Initialize Everything when page document loads
+        window.onload = function() {
+            init();
+        };
     </script>
 </body>
 </html>
