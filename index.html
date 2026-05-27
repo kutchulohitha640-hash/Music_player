@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lohitha | Web Developer Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        accent: {
+                            light: '#4f46e5',
+                            dark: '#818cf8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Inter and Playwrite MX Guides -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playwrite+MX+Guides&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom Font Application */
+        .playwrite-mx-guides-regular {
+            font-family: "Playwrite MX Guides", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Subtle layout grid lines matching the handwriting guide aesthetics */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+        }
+        .dark .bg-grid {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        /* Custom scrollbar matching minimalist design */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        /* Smooth transitions for theme switching */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 font-sans min-h-screen relative selection:bg-indigo-500/20 selection:text-indigo-500">
+
+    <!-- Background Blueprint Guides -->
+    <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
+    <div class="fixed inset-0 bg-gradient-to-tr from-indigo-500/5 via-transparent to-emerald-500/5 pointer-events-none z-0"></div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#hero" class="text-xl playwrite-mx-guides-regular tracking-wider hover:opacity-85">
+                lohitha
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
+                <a href="#projects" class="hover:text-indigo-600 dark:hover:text-indigo-400">Projects</a>
+                <a href="#skills" class="hover:text-indigo-600 dark:hover:text-indigo-400">Skills</a>
+                <a href="#about" class="hover:text-indigo-600 dark:hover:text-indigo-400">About</a>
+                <a href="#contact" class="hover:text-indigo-600 dark:hover:text-indigo-400">Contact</a>
+            </nav>
+
+            <!-- Utility Buttons -->
+            <div class="flex items-center space-x-4">
+                <!-- Theme Toggle Button -->
+                <button id="themeToggle" class="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon dark:hidden text-lg"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-lg"></i>
+                </button>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileMenu" class="hidden md:hidden border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-6 py-4 space-y-3">
+            <a href="#projects" class="block py-2 text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Projects</a>
+            <a href="#skills" class="block py-2 text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Skills</a>
+            <a href="#about" class="block py-2 text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">About</a>
+            <a href="#contact" class="block py-2 text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-6 relative z-10">
+
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-[85vh] flex flex-col justify-center items-start pt-12 pb-20">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-6 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                <span>Open for opportunities</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-7xl font-light tracking-tight mb-2">
+                Hi, I'm <span class="playwrite-mx-guides-regular text-indigo-600 dark:text-indigo-400 block md:inline-block ml-0 md:ml-4">lohitha</span>
+            </h1>
+            
+            <h2 class="text-2xl md:text-4xl font-light text-zinc-500 dark:text-zinc-400 mb-8 max-w-3xl leading-relaxed">
+                A creative web developer crafted around pristine minimalist designs, beautiful interactions, and clean, performant codebases.
+            </h2>
+
+            <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <a href="#projects" class="inline-flex justify-center items-center px-8 py-3.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-medium shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transform hover:-translate-y-0.5 active:translate-y-0 transition-all text-center">
+                    View My Work <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                </a>
+                <a href="#contact" class="inline-flex justify-center items-center px-8 py-3.5 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 font-medium transition-all text-center">
+                    Let's Chat
+                </a>
+            </div>
+
+            <div class="mt-16 flex items-center space-x-6 text-sm text-zinc-500 dark:text-zinc-400">
+                <span>Featured Skills:</span>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-2.5 py-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded text-xs">HTML/CSS</span>
+                    <span class="px-2.5 py-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded text-xs">JavaScript</span>
+                    <span class="px-2.5 py-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded text-xs">Tailwind CSS</span>
+                    <span class="px-2.5 py-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded text-xs">React</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 border-t border-zinc-200/50 dark:border-zinc-800/50 scroll-mt-16">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-2">My Showcase</h2>
+                    <h3 class="text-3xl md:text-4xl font-light tracking-tight">Crafted Web Solutions</h3>
+                </div>
+                
+                <!-- Category Filters -->
+                <div id="filterContainer" class="flex flex-wrap gap-2 mt-6 md:mt-0 p-1 bg-zinc-200/40 dark:bg-zinc-900/40 border border-zinc-300/30 dark:border-zinc-800/30 rounded-xl max-w-max">
+                    <button data-filter="all" class="filter-btn active px-4 py-1.5 rounded-lg text-xs font-medium transition-all bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow">
+                        All
+                    </button>
+                    <button data-filter="frontend" class="filter-btn px-4 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all">
+                        Frontend
+                    </button>
+                    <button data-filter="backend" class="filter-btn px-4 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all">
+                        Backend/API
+                    </button>
+                    <button data-filter="creative" class="filter-btn px-4 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all">
+                        Creative Tech
+                    </button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Dynamic insertion or HTML templating ready -->
+                
+                <!-- Project 1 -->
+                <div class="project-card group bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl dark:hover:shadow-indigo-950/20 transform hover:-translate-y-1 transition-all duration-300" data-category="frontend">
+                    <div class="p-1">
+                        <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-zinc-200/40 dark:border-zinc-800/40">
+                            <!-- Premium SVG Blueprint illustration -->
+                            <svg class="w-2/3 h-2/3 opacity-75 group-hover:scale-105 transition-all duration-500" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="10" y="10" width="180" height="100" rx="6" stroke="#4f46e5" stroke-width="1.5" stroke-dasharray="4 4"/>
+                                <rect x="25" y="25" width="150" height="40" rx="4" fill="#4f46e5" fill-opacity="0.1" stroke="#4f46e5" stroke-width="1"/>
+                                <circle cx="40" cy="85" r="10" stroke="#10b981" stroke-width="1.5"/>
+                                <line x1="60" y1="80" x2="160" y2="80" stroke="#94a3b8" stroke-width="2"/>
+                                <line x1="60" y1="90" x2="130" y2="90" stroke="#94a3b8" stroke-width="1.5"/>
+                            </svg>
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-zinc-900/85 text-zinc-100 text-[10px] font-medium tracking-widest uppercase">AURA OS</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center space-x-2 text-xs text-indigo-500 mb-2 font-semibold uppercase tracking-wider">
+                            <span>Frontend</span>
+                            <span>•</span>
+                            <span>React</span>
+                        </div>
+                        <h4 class="text-xl font-light mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Aura - Minimalist Task Orchestrator</h4>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 line-clamp-2">
+                            A highly optimized workspace hub designed for developer workflows. Strips distraction with markdown notes, clean kanbans, and pomodoro integrations.
+                        </p>
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
+                            <span class="text-xs text-zinc-400">View details to launch simulator</span>
+                            <button onclick="openProjectModal('aura')" class="text-xs font-semibold flex items-center group-hover:translate-x-1 transition-transform">
+                                Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card group bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl dark:hover:shadow-indigo-950/20 transform hover:-translate-y-1 transition-all duration-300" data-category="backend">
+                    <div class="p-1">
+                        <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-zinc-200/40 dark:border-zinc-800/40">
+                            <!-- Premium SVG Backend illustration -->
+                            <svg class="w-2/3 h-2/3 opacity-75 group-hover:scale-105 transition-all duration-500" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="20" y="20" width="160" height="24" rx="3" stroke="#94a3b8" stroke-width="1"/>
+                                <rect x="20" y="48" width="160" height="24" rx="3" stroke="#4f46e5" stroke-width="1.5"/>
+                                <rect x="20" y="76" width="160" height="24" rx="3" stroke="#94a3b8" stroke-width="1"/>
+                                <circle cx="32" cy="32" r="3" fill="#10b981"/>
+                                <circle cx="32" cy="60" r="3" fill="#4f46e5"/>
+                                <circle cx="32" cy="88" r="3" fill="#f59e0b"/>
+                                <line x1="50" y1="60" x2="150" y2="60" stroke="#4f46e5" stroke-width="1" stroke-dasharray="2 2"/>
+                            </svg>
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-zinc-900/85 text-zinc-100 text-[10px] font-medium tracking-widest uppercase">LUMINA GRAPH</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center space-x-2 text-xs text-emerald-500 mb-2 font-semibold uppercase tracking-wider">
+                            <span>Backend/API</span>
+                            <span>•</span>
+                            <span>NodeJS & GraphQL</span>
+                        </div>
+                        <h4 class="text-xl font-light mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Lumina API Analytics Engine</h4>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 line-clamp-2">
+                            Secure, real-time metrics telemetry collector. Handles throughputs of up to 10k messages per second with minimal event loop lag.
+                        </p>
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
+                            <span class="text-xs text-zinc-400">Database charts included</span>
+                            <button onclick="openProjectModal('lumina')" class="text-xs font-semibold flex items-center group-hover:translate-x-1 transition-transform">
+                                Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card group bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl dark:hover:shadow-indigo-950/20 transform hover:-translate-y-1 transition-all duration-300" data-category="creative">
+                    <div class="p-1">
+                        <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-zinc-200/40 dark:border-zinc-800/40">
+                            <svg class="w-2/3 h-2/3 opacity-75 group-hover:scale-105 transition-all duration-500" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="100" cy="60" r="40" stroke="#4f46e5" stroke-width="1" stroke-dasharray="6 6"/>
+                                <circle cx="100" cy="60" r="25" stroke="#10b981" stroke-width="1.5"/>
+                                <path d="M60 60 L140 60 M100 20 L100 100" stroke="#94a3b8" stroke-width="0.5"/>
+                                <circle cx="100" cy="35" r="4" fill="#e11d48"/>
+                            </svg>
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-zinc-900/85 text-zinc-100 text-[10px] font-medium tracking-widest uppercase">CANVAS DRAFT</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center space-x-2 text-xs text-purple-500 mb-2 font-semibold uppercase tracking-wider">
+                            <span>Creative Tech</span>
+                            <span>•</span>
+                            <span>HTML5 Canvas</span>
+                        </div>
+                        <h4 class="text-xl font-light mb-2 group-hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">CanvasDraft Vector Editor</h4>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 line-clamp-2">
+                            A browser-native canvas board supporting SVG vector creation, custom line guide paths, and seamless canvas exportation.
+                        </p>
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
+                            <span class="text-xs text-zinc-400">Interactive workspace tool</span>
+                            <button onclick="openProjectModal('canvasdraft')" class="text-xs font-semibold flex items-center group-hover:translate-x-1 transition-transform">
+                                Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card group bg-white/40 dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden hover:shadow-xl dark:hover:shadow-indigo-950/20 transform hover:-translate-y-1 transition-all duration-300" data-category="frontend">
+                    <div class="p-1">
+                        <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-zinc-200/40 dark:border-zinc-800/40">
+                            <svg class="w-2/3 h-2/3 opacity-75 group-hover:scale-105 transition-all duration-500" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="30" y="30" width="140" height="60" rx="4" stroke="#94a3b8" stroke-width="1.5"/>
+                                <circle cx="60" cy="60" r="15" stroke="#4f46e5" stroke-width="1"/>
+                                <path d="M100 50 L140 50 M100 60 L130 60 M100 70 L120 70" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-zinc-900/85 text-zinc-100 text-[10px] font-medium tracking-widest uppercase">ECHOSYNC</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center space-x-2 text-xs text-indigo-500 mb-2 font-semibold uppercase tracking-wider">
+                            <span>Frontend</span>
+                            <span>•</span>
+                            <span>Vanilla JS</span>
+                        </div>
+                        <h4 class="text-xl font-light mb-2 group-hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">EchoSync Media Terminal</h4>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4 line-clamp-2">
+                            A browser music client with built-in canvas visualizers mapping live audio-node stream metrics dynamically.
+                        </p>
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
+                            <span class="text-xs text-zinc-400">Pure client-side audio API</span>
+                            <button onclick="openProjectModal('echosync')" class="text-xs font-semibold flex items-center group-hover:translate-x-1 transition-transform">
+                                Learn More <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Skills & Abilities Section -->
+        <section id="skills" class="py-20 border-t border-zinc-200/50 dark:border-zinc-800/50 scroll-mt-16">
+            <div class="mb-12">
+                <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-2">My Toolkit</h2>
+                <h3 class="text-3xl md:text-4xl font-light tracking-tight">Core Competencies</h3>
+            </div>
+
+            <!-- Interative Skill Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Skill card 1 -->
+                <div class="skill-card group p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center hover:shadow-lg hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-html5"></i>
+                    </div>
+                    <h4 class="font-medium text-sm mb-1">Frontend Engineering</h4>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400">HTML5, CSS3, ES6 JS</p>
+                    <div class="mt-4 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-indigo-500 w-11/12"></div>
+                    </div>
+                </div>
+
+                <!-- Skill card 2 -->
+                <div class="skill-card group p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center hover:shadow-lg hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-react"></i>
+                    </div>
+                    <h4 class="font-medium text-sm mb-1">Modern Frameworks</h4>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400">React, TailwindCSS</p>
+                    <div class="mt-4 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-indigo-500 w-[85%]"></div>
+                    </div>
+                </div>
+
+                <!-- Skill card 3 -->
+                <div class="skill-card group p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center hover:shadow-lg hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-node-js"></i>
+                    </div>
+                    <h4 class="font-medium text-sm mb-1">Backend Development</h4>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400">NodeJS, GraphQL, APIs</p>
+                    <div class="mt-4 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-emerald-500 w-[75%]"></div>
+                    </div>
+                </div>
+
+                <!-- Skill card 4 -->
+                <div class="skill-card group p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center hover:shadow-lg hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-compass-drafting"></i>
+                    </div>
+                    <h4 class="font-medium text-sm mb-1">Creative Interactions</h4>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400">HTML5 Canvas, CSS Art</p>
+                    <div class="mt-4 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-amber-500 w-[80%]"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Lohitha Section -->
+        <section id="about" class="py-20 border-t border-zinc-200/50 dark:border-zinc-800/50 scroll-mt-16">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                <!-- Grid illustration matching guidelines -->
+                <div class="md:col-span-5 relative">
+                    <div class="aspect-square rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-800 p-4 relative overflow-hidden bg-white/50 dark:bg-zinc-900/10 backdrop-blur-sm">
+                        <!-- Intricate developer decorative badge -->
+                        <div class="w-full h-full rounded-xl bg-indigo-50/50 dark:bg-indigo-950/20 flex flex-col items-center justify-center p-6 border border-zinc-200 dark:border-zinc-800">
+                            <div class="playwrite-mx-guides-regular text-5xl md:text-6xl text-indigo-600 dark:text-indigo-400 mb-4 select-none">
+                                L
+                            </div>
+                            <span class="text-xs font-semibold tracking-widest uppercase mb-1">Lohitha Portfolio</span>
+                            <span class="text-[10px] text-zinc-400">EST. 2026</span>
+                            <div class="absolute bottom-6 left-6 right-6 flex justify-between border-t border-dashed border-zinc-200 dark:border-zinc-800 pt-4 text-[10px] text-zinc-500">
+                                <span>BUILD: FRONTEND</span>
+                                <span>TYPE: RESPONSIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-7">
+                    <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-2">My Story</h2>
+                    <h3 class="text-3xl md:text-4xl font-light tracking-tight mb-6">Driven by beautiful minimalism</h3>
+                    <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6">
+                        I am Lohitha, a developer deeply passionate about reducing noise on the internet. I believe web interfaces should breathe, code bases should be modular and easily testable, and design systems should feel deliberate.
+                    </p>
+                    <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
+                        My primary playground includes advanced HTML layouts, dynamic reactive frameworks, custom vector interfaces, and performant backend data streams. When not designing minimalist modules, I’m reading design FAQs, exploring new CSS variables, and building sandbox utilities.
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <a href="#contact" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm transition-colors shadow-lg shadow-indigo-500/10">
+                            Hire Me
+                        </a>
+                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="px-6 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 text-sm font-medium transition-all">
+                            <i class="fa-brands fa-github mr-2"></i> GitHub Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 border-t border-zinc-200/50 dark:border-zinc-800/50 scroll-mt-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-5">
+                    <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-2">Get in touch</h2>
+                    <h3 class="text-3xl md:text-4xl font-light tracking-tight mb-6">Let's build something beautiful.</h3>
+                    <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
+                        Have an project proposal, an exciting job opportunity, or simply want to chat about minimal styling? Leave a message directly in this terminal!
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-lg bg-zinc-200/50 dark:bg-zinc-800/50 flex items-center justify-center text-indigo-500">
+                                <i class="fa-regular fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs text-zinc-400 font-semibold uppercase">Email Directly</h4>
+                                <a href="mailto:lohitha.dev@example.com" class="text-sm hover:underline hover:text-indigo-600 dark:hover:text-indigo-400">lohitha.dev@example.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-lg bg-zinc-200/50 dark:bg-zinc-800/50 flex items-center justify-center text-indigo-500">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs text-zinc-400 font-semibold uppercase">Location</h4>
+                                <span class="text-sm text-zinc-600 dark:text-zinc-400">Global / Remote</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Form -->
+                <div class="lg:col-span-7">
+                    <form id="contactForm" class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 md:p-8 space-y-6 shadow-sm">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-xs font-semibold text-zinc-400 uppercase mb-2">Your Name</label>
+                                <input type="text" id="name" required class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 text-sm transition-all" placeholder="Ada Lovelace">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-xs font-semibold text-zinc-400 uppercase mb-2">Email Address</label>
+                                <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 text-sm transition-all" placeholder="ada@example.com">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-xs font-semibold text-zinc-400 uppercase mb-2">Message</label>
+                            <textarea id="message" rows="4" required class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-400 text-sm transition-all resize-none" placeholder="Let's build a minimalist page..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-semibold hover:shadow-lg hover:shadow-indigo-500/5 active:scale-[0.99] transition-all flex items-center justify-center space-x-2">
+                            <span>Dispatch Message</span>
+                            <i class="fa-regular fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="border-t border-zinc-200/50 dark:border-zinc-800/50 bg-zinc-100/50 dark:bg-zinc-950/50 py-12 relative z-10">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <span class="playwrite-mx-guides-regular text-lg text-zinc-400 dark:text-zinc-600">lohitha</span>
+            <span class="text-xs text-zinc-400 dark:text-zinc-500">© 2026 Lohitha. Built with pure minimalist principles. All rights reserved.</span>
+            <div class="flex items-center space-x-6">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 text-lg transition-colors" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 text-lg transition-colors" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 text-lg transition-colors" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Project Showcase Details Modal -->
+    <div id="projectModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Modal Backdrop -->
+            <div id="modalBackdrop" class="fixed inset-0 bg-zinc-950/60 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
+
+            <!-- Modal Align Helper -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <!-- Modal Content Frame -->
+            <div class="inline-block align-bottom bg-white dark:bg-zinc-900 rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full border border-zinc-200 dark:border-zinc-800">
+                <div class="p-6 md:p-8">
+                    <!-- Close button -->
+                    <div class="flex justify-between items-center mb-6">
+                        <span id="modalCategory" class="px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider">Category</span>
+                        <button id="closeModalBtn" class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+
+                    <h3 id="modalTitle" class="text-2xl font-light tracking-tight mb-4">Project Title</h3>
+                    
+                    <!-- Dynamic Demo Frame Simulator -->
+                    <div class="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 mb-6">
+                        <div class="flex items-center space-x-1.5 mb-3 border-b border-zinc-200 dark:border-zinc-800 pb-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400 inline-block"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-400 inline-block"></span>
+                            <span class="text-[10px] text-zinc-400 ml-2 font-mono">browser-demo-live-instance</span>
+                        </div>
+                        <div id="modalSimulatorContent" class="min-h-[140px] flex items-center justify-center">
+                            <!-- Injected by script -->
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-semibold text-zinc-400 uppercase">Architecture & Concept</h4>
+                        <p id="modalDescription" class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+                            Detailed project specification.
+                        </p>
+
+                        <h4 class="text-xs font-semibold text-zinc-400 uppercase pt-2">Stack Applied</h4>
+                        <div id="modalStack" class="flex flex-wrap gap-2">
+                            <!-- Injected tags -->
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end space-x-3 mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-800">
+                        <a id="modalLiveLink" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-sm font-semibold hover:opacity-90">
+                            Launch Live <i class="fa-solid fa-up-right-from-square ml-1.5 text-xs"></i>
+                        </a>
+                        <a id="modalCodeLink" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-sm font-semibold">
+                            Source Repository <i class="fa-brands fa-github ml-1.5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Toast Message Success -->
+    <div id="toastSuccess" class="fixed bottom-6 right-6 z-50 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-6 py-4 rounded-2xl shadow-xl border border-zinc-800 dark:border-zinc-200 flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-full bg-green-500/20 text-green-500 dark:text-green-600 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+                <h5 class="text-xs font-bold uppercase tracking-wider">Message Dispatched!</h5>
+                <p class="text-[10px] opacity-75">Thank you, Lohitha will reach out soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Manager
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // Check for saved preferences
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Mobile Menu Toggler
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile navigation on menu link clicks
+        const navLinks = mobileMenu.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Project Directory Database
+        const projectData = {
+            aura: {
+                title: 'Aura - Minimalist Task Orchestrator',
+                category: 'Frontend',
+                description: 'Aura OS represents a minimal canvas designed around productivity and code sprints. It combines clean minimalist task boards with localized storage options, custom markdown notes, and focused Pomodoro clock intervals.',
+                stack: ['React', 'Tailwind CSS', 'LocalStorage', 'Framer Motion'],
+                liveLink: 'https://github.com',
+                codeLink: 'https://github.com',
+                simulatorHTML: `
+                    <div class="w-full max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl flex flex-col justify-between">
+                        <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2 mb-3">
+                            <span class="text-xs font-semibold tracking-wider text-indigo-500">Aura Board</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500">Active Sprint</span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center justify-between p-2 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800">
+                                <div class="flex items-center space-x-2">
+                                    <input type="checkbox" checked disabled class="accent-indigo-500">
+                                    <span class="text-xs line-through text-zinc-400">Restyle Header Elements</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800">
+                                <div class="flex items-center space-x-2">
+                                    <input type="checkbox" disabled class="accent-indigo-500">
+                                    <span class="text-xs text-zinc-600 dark:text-zinc-300">Set repository secrets</span>
+                                </div>
+                                <span class="text-[9px] bg-red-500/10 text-red-500 px-1.5 py-0.2 rounded font-semibold uppercase">High</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                            <span class="text-[10px] text-zinc-400">Total Items: 2</span>
+                            <span class="text-[10px] text-zinc-400">Pomodoro: 25:00</span>
+                        </div>
+                    </div>
+                `
+            },
+            lumina: {
+                title: 'Lumina API Analytics Engine',
+                category: 'Backend / API',
+                description: 'A beautiful administrative pipeline designed to harvest microservice telemetry instantly. Deploys optimized GraphQL queries to compile traffic load, memory, and disk health metrics within minimal footprints.',
+                stack: ['NodeJS', 'Express', 'GraphQL', 'Chart.js'],
+                liveLink: 'https://github.com',
+                codeLink: 'https://github.com',
+                simulatorHTML: `
+                    <div class="w-full max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold text-emerald-500 tracking-wider">LUMINA SERVER METRICS</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-500 animate-pulse">Online</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 mb-2">
+                            <div class="p-2.5 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800">
+                                <span class="block text-[9px] text-zinc-400 uppercase">Response Code</span>
+                                <span class="text-base font-semibold text-emerald-500">200 OK</span>
+                            </div>
+                            <div class="p-2.5 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-100 dark:border-zinc-800">
+                                <span class="block text-[9px] text-zinc-400 uppercase">Latency (p99)</span>
+                                <span class="text-base font-semibold text-zinc-600 dark:text-zinc-300">4.2ms</span>
+                            </div>
+                        </div>
+                        <div class="h-6 w-full flex items-end gap-[3px] mt-4">
+                            <div class="h-[20%] w-full bg-emerald-400 rounded-sm"></div>
+                            <div class="h-[40%] w-full bg-emerald-400 rounded-sm"></div>
+                            <div class="h-[30%] w-full bg-emerald-400 rounded-sm"></div>
+                            <div class="h-[60%] w-full bg-emerald-400 rounded-sm"></div>
+                            <div class="h-[80%] w-full bg-emerald-400 rounded-sm"></div>
+                            <div class="h-[95%] w-full bg-emerald-500 rounded-sm"></div>
+                        </div>
+                    </div>
+                `
+            },
+            canvasdraft: {
+                title: 'CanvasDraft Vector Editor',
+                category: 'Creative Tech',
+                description: 'Browser native interactive sketch board built on top of high-performance HTML5 Canvas APIs. Designed to sketch out minimalist UI drafts and quickly export SVG vector tags.',
+                stack: ['HTML5 Canvas', 'Vanilla CSS', 'ES6 JavaScript'],
+                liveLink: 'https://github.com',
+                codeLink: 'https://github.com',
+                simulatorHTML: `
+                    <div class="w-full max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl text-center">
+                        <div class="mb-3 flex justify-between">
+                            <span class="text-[10px] font-bold text-zinc-400">DRAFTING CANVAS</span>
+                            <div class="flex space-x-1">
+                                <span class="w-3 h-3 bg-red-500 rounded-full inline-block cursor-pointer"></span>
+                                <span class="w-3 h-3 bg-indigo-500 rounded-full inline-block cursor-pointer"></span>
+                                <span class="w-3 h-3 bg-emerald-500 rounded-full inline-block cursor-pointer"></span>
+                            </div>
+                        </div>
+                        <div class="h-28 border border-dashed border-zinc-300 dark:border-zinc-800 rounded-lg flex items-center justify-center relative bg-zinc-50 dark:bg-zinc-950">
+                            <!-- Vector draft placeholder simulator -->
+                            <svg class="w-16 h-16 animate-spin duration-1000" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="40" stroke="#4f46e5" stroke-width="2" stroke-dasharray="10 10"/>
+                            </svg>
+                            <span class="absolute bottom-1 right-2 text-[9px] text-zinc-400">Scale: 100%</span>
+                        </div>
+                    </div>
+                `
+            },
+            echosync: {
+                title: 'EchoSync Media Terminal',
+                category: 'Frontend',
+                description: 'A client-side media simulation showcasing the power of customized canvas overlays mapped to HTMLAudioNodes. Real-time pitch, frequency, and spectrum visualizations generated completely locally without slow server setups.',
+                stack: ['Web Audio API', 'Canvas API', 'Tailwind CSS'],
+                liveLink: 'https://github.com',
+                codeLink: 'https://github.com',
+                simulatorHTML: `
+                    <div class="w-full max-w-sm bg-zinc-950 border border-zinc-800 p-4 rounded-xl text-zinc-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-[9px] text-zinc-500 font-mono">01:45 / 03:20</span>
+                            <span class="text-[9px] text-zinc-500 font-mono uppercase">Streaming</span>
+                        </div>
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center text-lg shadow-lg">
+                                <i class="fa-solid fa-music"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-xs font-semibold">Minimalist Resonance</h5>
+                                <p class="text-[10px] text-zinc-500">Lohitha & Synth Labs</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-4">
+                            <button class="text-zinc-500 hover:text-white transition-colors text-xs"><i class="fa-solid fa-backward-step"></i></button>
+                            <button class="w-8 h-8 rounded-full bg-white text-zinc-950 flex items-center justify-center hover:scale-105 transition-transform"><i class="fa-solid fa-pause"></i></button>
+                            <button class="text-zinc-500 hover:text-white transition-colors text-xs"><i class="fa-solid fa-forward-step"></i></button>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Project Filter Mechanics
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Clear active states
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-zinc-900', 'text-white', 'dark:bg-zinc-100', 'dark:text-zinc-900', 'shadow');
+                    b.classList.add('text-zinc-600', 'dark:text-zinc-400');
+                });
+
+                // Apply active to selected
+                btn.classList.add('active', 'bg-zinc-900', 'text-white', 'dark:bg-zinc-100', 'dark:text-zinc-900', 'shadow');
+                btn.classList.remove('text-zinc-600', 'dark:text-zinc-400');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 50);
+                    } else {
+                        card.style.opacity = '0';
+                        setTimeout(() => card.style.display = 'none', 200);
+                    }
+                });
+            });
+        });
+
+        // Modal Elements
+        const projectModal = document.getElementById('projectModal');
+        const modalBackdrop = document.getElementById('modalBackdrop');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalStack = document.getElementById('modalStack');
+        const modalLiveLink = document.getElementById('modalLiveLink');
+        const modalCodeLink = document.getElementById('modalCodeLink');
+        const modalSimulatorContent = document.getElementById('modalSimulatorContent');
+
+        function openProjectModal(projectId) {
+            const data = projectData[projectId];
+            if (!data) return;
+
+            // Populate details
+            modalCategory.innerText = data.category;
+            modalTitle.innerText = data.title;
+            modalDescription.innerText = data.description;
+            modalSimulatorContent.innerHTML = data.simulatorHTML;
+            
+            // Build stack tag lists
+            modalStack.innerHTML = '';
+            data.stack.forEach(tech => {
+                const span = document.createElement('span');
+                span.className = 'px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-medium text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700/50';
+                span.innerText = tech;
+                modalStack.appendChild(span);
+            });
+
+            modalLiveLink.href = data.liveLink;
+            modalCodeLink.href = data.codeLink;
+
+            // Show modal
+            projectModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeModal() {
+            projectModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modalBackdrop.addEventListener('click', closeModal);
+
+        // Escape Key Modal Exit
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Contact Submission Mechanics
+        const contactForm = document.getElementById('contactForm');
+        const toastSuccess = document.getElementById('toastSuccess');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const clientName = document.getElementById('name').value;
+            const clientEmail = document.getElementById('email').value;
+            const clientMessage = document.getElementById('message').value;
+
+            // Package message
+            const payload = {
+                name: clientName,
+                email: clientEmail,
+                message: clientMessage,
+                timestamp: new Date().toISOString()
+            };
+
+            // Save locally to simulate delivery on static hosts (such as GitHub Pages)
+            const savedMessages = JSON.parse(localStorage.getItem('messages') || '[]');
+            savedMessages.push(payload);
+            localStorage.setItem('messages', JSON.stringify(savedMessages));
+
+            // Feedback Toast Animation
+            toastSuccess.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
+            toastSuccess.classList.add('translate-y-0', 'opacity-100');
+
+            // Reset UI Form
+            contactForm.reset();
+
+            // Automate Toast Expiration
+            setTimeout(() => {
+                toastSuccess.classList.remove('translate-y-0', 'opacity-100');
+                toastSuccess.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
